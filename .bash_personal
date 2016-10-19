@@ -43,7 +43,7 @@ source "${GITAWAREPROMPT}/main.sh"
 
 ## Prompt
 P_BAR="$(printf '%*s\n' "${COLUMNS:-$(tput cols)}" '' | tr ' ' =)"
-P_IP=$(ip route get 8.8.8.8 | awk '{print $NF; exit}')
+P_IP=$(ifconfig | grep -Eo 'inet (addr:)?([0-9]*\.){3}[0-9]*' | grep -Eo '([0-9]*\.){3}[0-9]*' | grep -v '127.0.0.1' | tail -n 1)
 P_START="\[$bldylw\]IP\[$txtrst\]:\[$bldpur\]$P_IP\[$txtrst\]"
 P_USER="\[$txtgrn\]\u@\[$bldgrn\]\h\[$txtrst\]"
 P_DATE="\[$txtred\]\d \[$txtylw\]\@\[$txtrst\]"
