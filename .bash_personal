@@ -1,0 +1,57 @@
+#@IgnoreInspection BashAddShebang
+#===> Bash Personal Script
+
+## Bash Functions
+if [ -f ~/.bash_functions ]; then
+    . ~/.bash_functions
+fi
+
+## Bash NPM Autocomplete
+if [ -f ~/.bash_npm_complete ]; then
+    . ~/.bash_npm_complete
+fi
+
+# \u : Username # \h : Hostname # \n : Newline # \d : Date # \@ : Time # \w : Working Dir
+
+## Underline              ## Background                 ## Bold                       ## Regular
+# \[$undblk\] # Black     # \[$bakblk\] # Black         # \[$bldblk\] # Black         # \[$txtblk\] # Black
+# \[$undred\] # Red       # \[$bakred\] # Red           # \[$bldred\] # Red           # \[$txtred\] # Red
+# \[$undgrn\] # Green     # \[$bakgrn\] # Green         # \[$bldgrn\] # Green         # \[$txtgrn\] # Green
+# \[$undylw\] # Yellow    # \[$bakylw\] # Yellow        # \[$bldylw\] # Yellow        # \[$txtylw\] # Yellow
+# \[$undblu\] # Blue      # \[$bakblu\] # Blue          # \[$bldblu\] # Blue          # \[$txtblu\] # Blue
+# \[$undpur\] # Purple    # \[$bakpur\] # Purple        # \[$bldpur\] # Purple        # \[$txtpur\] # Purple
+# \[$undcyn\] # Cyan      # \[$bakcyn\] # Cyan          # \[$bldcyn\] # Cyan          # \[$txtcyn\] # Cyan
+# \[$undwht\] # White     # \[$bakwht\] # White         # \[$bldwht\] # White         # \[$txtwht\] # White
+
+## Reset
+# \[$txtrst\] # Text Reset
+
+## History Key Bindings
+bind '"\e[A": history-search-backward'
+bind '"\e[B": history-search-forward'
+bind '"\eOA": history-search-backward'
+bind '"\eOB": history-search-forward'
+
+## Git Aware Prompt
+if [ ! -d "${HOME}/.bash_config/git-aware-prompt" ]; then
+    cd ~/.bash_config
+    git clone git://github.com/jimeh/git-aware-prompt.git
+fi
+
+export GITAWAREPROMPT=~/.bash_config/git-aware-prompt
+source "${GITAWAREPROMPT}/main.sh"
+
+## Prompt
+P_BAR="$(printf '%*s\n' "${COLUMNS:-$(tput cols)}" '' | tr ' ' =)"
+P_IP=$(ip route get 8.8.8.8 | awk '{print $NF; exit}')
+P_START="\[$bldylw\]IP\[$txtrst\]:\[$bldpur\]$P_IP\[$txtrst\]"
+P_USER="\[$txtgrn\]\u@\[$bldgrn\]\h\[$txtrst\]"
+P_DATE="\[$txtred\]\d \[$txtylw\]\@\[$txtrst\]"
+P_GIT="\[$txtcyn\]\$git_branch\[$txtred\]\$git_dirty\[$txtrst\]"
+P_WDIR="\[$bldcyn\]\w\[$txtrst\]"
+P_END="\[$txtgrn\]\$>\[$txtrst\]"
+export PS1="$P_BAR\\n[$P_START] $P_USER [$P_DATE] $P_GIT\\n$P_WDIR $P_END "
+
+# LongHistory
+PROMPT_COMMAND="long_history; $PROMPT_COMMAND"
+
