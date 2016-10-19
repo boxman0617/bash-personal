@@ -50,11 +50,11 @@ echo "==> Installed!" | slowtype
 
 echo "==> Figuring out main bash script..." | slowtype
 PROFILE="$HOME/.bashrc"
-if [ ! -f "$HOME/.bashrc" ]; then
-	if [ -f "$HOME/.profile" ]; then
+if [ ! -e "$HOME/.bashrc" ]; then
+	if [ -e "$HOME/.profile" ]; then
 		PROFILE="$HOME/.profile"
 	fi
-	if [ -f "$HOME/.bash_profile" ]; then
+	if [ -e "$HOME/.bash_profile" ]; then
 		PROFILE="$HOME/.bash_profile"
 	fi	
 fi
